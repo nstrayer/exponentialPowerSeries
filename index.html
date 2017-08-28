@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Chromebook Data Science JS!</title>
+<style>
+  .project {
+    max-width: 500px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    box-shadow: 5px 5px 2px #888888;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  
+  .tooltip {
+    top: -1000px;
+    position: fixed;
+    padding: 10px;
+    background: rgba(255, 255, 255, .90);
+    border: 1px solid lightgray;
+    pointer-events: none;
+  }
+  .tooltip-hidden{
+    opacity: 0;
+    transition: all .3s;
+    transition-delay: .1s;
+  }
+  
+  @media (max-width: 590px){
+    div.tooltip{
+      bottom: -1px;
+      width: calc(100%);
+      left: -1px !important;
+      right: -1px !important;
+      top: auto !important;
+      width: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <h1>My Projects!</h1>
+  <div id = 'projects'></div>
+  <div id = 'viz'></div>
+  <script src="js/d3v4+jetpack.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
