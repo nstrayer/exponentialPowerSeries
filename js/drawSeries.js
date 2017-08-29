@@ -1,9 +1,8 @@
 import {seq, calcStep, showSteps} from './calculateEx.js';
 
 export const drawSeries = (exponent, numberSteps, c) => {
-  const barWidth = 20;
 
-  const {svg, height, x, y, xAxis, yAxis, drawAxis} = c;
+  const {svg, height, x, y, xAxis, yAxis, drawAxis, width} = c;
   
   // calculate the value at each step in the series.
   const steps = showSteps(exponent, numberSteps);
@@ -38,14 +37,20 @@ export const drawSeries = (exponent, numberSteps, c) => {
   // ------------------------------------------------------//
   // Draw bars for each step
   // ------------------------------------------------------//
+  // I could use the rangeband scale but I'm too lazy and want to keep
+  // using jetpacks scales instead.
+  const barWidth = (width / numberSteps) * 0.9;
+  
   const stepBars = svg.selectAll('.stepBars')
     .data(steps, (d,i) => i);
-    
+  
+  stepBars.exit() .transition(d3.transition('barmove').duration(500))
+    .at({ y: c.height, height: 0 });
+  
   stepBars.enter()
     .append('rect')
     .attr('class', 'stepBars')
     .at({ //constant attributes
-      width: barWidth,
       fill: 'orangered',
       y: c.height,
       height: 1e-6,
@@ -56,6 +61,8 @@ export const drawSeries = (exponent, numberSteps, c) => {
     .at({
       x: (d,i) => c.x(i) - barWidth/2,
       y: (d,i) => c.y(d),
+      width: barWidth,
       height: (d,i) => c.height - c.y(d)
     });
+  
 };

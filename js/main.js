@@ -15,17 +15,35 @@ var c = d3.conventions({
 
 
 
-drawSeries(3, 10, c);
 
-console.log(c)
+let expon = 3;
+let numberSteps = 10;
+
+drawSeries(3, 10, c);
 
 slider({
   c,
   sliderRange: [0, 10],
   sliderWidth: 200,
-  startPosition: 3,
+  startPosition: expon,
   xPos: 0.7,
-  yPos: 0,
+  yPos: -0.05,
   tickFont: 'san serif',
-  onDone: (pos) => drawSeries(pos, 10, c)
+  onDone: (pos) => {
+    expon = pos;
+    drawSeries(expon, numberSteps, c)
+  }
 });
+
+slider({
+  c,
+  sliderRange: [0, 30],
+  sliderWidth: 200,
+  startPosition: numberSteps,
+  xPos: 0.7,
+  yPos: 0.05,
+  tickFont: 'san serif',
+  onDone: (pos) => {
+    numberSteps = pos;
+    drawSeries(expon, numberSteps, c)
+  }});
