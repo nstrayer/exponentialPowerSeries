@@ -6,10 +6,11 @@ import {drawStacked} from './drawStacked.js'
 import {drawSeries} from './drawSeries.js';
 
 const sliderWidth = 200;
-// setup svg for drawing.
-var sel = d3.select('#viz').html('');
 
-var c = d3.conventions({
+// setup svg for drawing.
+const sel = d3.select('#viz').html('');
+
+let c = d3.conventions({
   parentSel: sel,
   totalWidth: sel.node().offsetWidth,
   height: 400,
@@ -20,38 +21,60 @@ var c = d3.conventions({
 function runViz(config){
   let {expon = 3, numberSteps = 10} = config;
   
-  const redraw = (pos, type) => {
-    expon = type === 'expon' ? pos: expon;
-    numberSteps = type === 'numSteps' ? pos: numberSteps;
-    // calculate the value at each step in the series.
-    const steps = showSteps(expon, numberSteps);
-    drawSeries(steps, c);
-    drawStacked(steps, expon, c);
-  };
-  
-  const exponSlider = slid3r()
+  let exponSlider = slid3r()
     .width(sliderWidth)
     .font('garamond')
     .range([0,20])
     .label('Exponent')
-    .loc([c.width * 0.4 - sliderWidth, -100])
-    .startPos(expon)
     .onDone(pos => redraw(pos,'expon'));
     
-  const stepsSlider = slid3r()
+  let stepsSlider = slid3r()
     .width(sliderWidth)
     .font('garamond')
     .range([0,30])
     .label('Number of Steps')
-    .loc([c.width * 0.6 , -100])
-    .startPos(numberSteps)
     .onDone(pos => redraw(pos,'numSteps'));
+    
+  function redraw(pos, type){
+    expon = type === 'expon' ? pos: expon;
+    numberSteps = type === 'numSteps' ? pos: numberSteps;
+    
+    // calculate the value at each step in the series.
+    const steps = showSteps(expon, numberSteps);
+    drawSeries(steps, c);
+    drawStacked(steps, expon, c);
+  }
   
-  c.svg.append('g').attr('class', 'exponSlider').call(exponSlider);
-  c.svg.append('g').attr('class', 'stepsSlider').call(stepsSlider);
+  const drawIt = () => {
+    sel.select('svg').remove();
+    
+    //update c
+    c = d3.conventions({
+      parentSel: sel,
+      totalWidth: sel.node().offsetWidth,
+      height: 400,
+      margin: {left: 50, right: 50, top: 130, bottom: 30}
+    });
+    
+    exponSlider = exponSlider
+      .loc([c.width * 0.4 - sliderWidth, -100])
+      .startPos(expon);
+    
+    stepsSlider = stepsSlider
+      .loc([c.width * 0.6 , -100])
+      .startPos(numberSteps);
+      
+    c.svg.append('g').attr('class', 'exponSlider').call(exponSlider);
+    c.svg.append('g').attr('class', 'stepsSlider').call(stepsSlider);
+    
+    redraw();
+  }
   
   // Kickoff viz w/ default values.
-  redraw();
+  drawIt();
+  
+  // redraw on resize
+  window.onresize = drawIt
 }
 
 
