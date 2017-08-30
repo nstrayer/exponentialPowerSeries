@@ -1,11 +1,10 @@
 // import d3 from 'https://d3js.org/d3.v4.min.js';
 // import slid3r from './libs/slid3r.js';
 import {showSteps} from './calculateEx.js';
-import {drawStacked} from './drawStacked.js'
+import {drawStacked} from './drawStacked.js';
 import {drawSeries} from './drawSeries.js';
 
-
-powerSeriesViz('#viz', 6, 10);
+//powerSeriesViz('#viz', 6, 10);
 
 function powerSeriesViz(target = '#viz', startExpon = 3, startNumberSteps = 10){
   const sliderWidth = 200;
@@ -71,15 +70,15 @@ function powerSeriesViz(target = '#viz', startExpon = 3, startNumberSteps = 10){
       c.svg.append('g').attr('class', 'stepsSlider').call(stepsSlider);
       
       redraw();
-    }
+    };
     
     // Kickoff viz w/ default values.
     drawIt();
     
     // redraw on resize
-    window.onresize = drawIt
+    window.onresize = drawIt;
   }
   
-  runViz({expon:startExpon, numberSteps:startNumberSteps})
+  runViz({expon:startExpon, numberSteps:startNumberSteps});
   
 }

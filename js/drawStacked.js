@@ -19,15 +19,14 @@ export function drawStacked(steps, expon, c){
   const stackData = steps.reduce(
     (series, step, i) => {
       const curSum = i > 0 ? series[i-1].end : 0;
-      return [...series, {start: curSum, end: curSum + step}]
+      return [...series, {start: curSum, end: curSum + step}];
     },
     []
-  )
+  );
 
   const estimate = stackData[stackData.length - 1].end;
   
-  const trueLine = svg
-    .selectAppend('g.trueLine')
+  const trueLine = svg.selectAppend('g.trueLine');
   
   trueLine.selectAppend('line')
     .at({
@@ -37,7 +36,7 @@ export function drawStacked(steps, expon, c){
       y2: barHeight,
       strokeWidth: 1,
       stroke: 'black',
-    })
+    });
   
   trueLine.selectAppend('text')
     .at({
@@ -53,7 +52,7 @@ export function drawStacked(steps, expon, c){
         </tspan>
         = ${d3.round(trueValue, 3)}
       </tspan>
-    `)
+    `);
     
   trueLine.transition(trans)
     .translate([sumScale(trueValue), 0]);
@@ -65,11 +64,11 @@ export function drawStacked(steps, expon, c){
     .at({
       x1: 0,
       x2: 0,
-      y1: 0,
+      y1: -barHeight/2,
       y2: 20 + barHeight,
       strokeWidth: 1,
       stroke: 'black',
-    })
+    });
   
   estimatedLine.selectAppend('text')
     .at({
@@ -77,7 +76,7 @@ export function drawStacked(steps, expon, c){
       x: -2,
       textAnchor: 'end'
     })
-    .text(`series estimate = ${d3.round(estimate, 3)}`)
+    .text(`series estimate = ${d3.round(estimate, 3)}`);
     
   estimatedLine.transition(trans)
     .translate([sumScale(estimate), 0]);
@@ -102,7 +101,7 @@ export function drawStacked(steps, expon, c){
       x: (d) => sumScale(d.start),
       width: d => sumScale(d.end) - sumScale(d.start),
       fill: (d,i) => colorScale(i)
-    })
+    });
     
   bars.exit()
     .remove();
