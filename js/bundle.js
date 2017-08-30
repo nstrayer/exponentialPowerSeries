@@ -207,7 +207,9 @@ var _drawStacked = require('./drawStacked.js');
 
 var _drawSeries = require('./drawSeries.js');
 
-//powerSeriesViz('#viz', 6, 10);
+powerSeriesViz('#viz', 6, 10); // import d3 from 'https://d3js.org/d3.v4.min.js';
+// import slid3r from './libs/slid3r.js';
+
 
 function powerSeriesViz() {
   var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '#viz';
@@ -278,7 +280,6 @@ function powerSeriesViz() {
   }
 
   runViz({ expon: startExpon, numberSteps: startNumberSteps });
-} // import d3 from 'https://d3js.org/d3.v4.min.js';
-// import slid3r from './libs/slid3r.js';
+}
 
 },{"./calculateEx.js":1,"./drawSeries.js":2,"./drawStacked.js":3}]},{},[4]);

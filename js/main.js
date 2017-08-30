@@ -4,7 +4,7 @@ import {showSteps} from './calculateEx.js';
 import {drawStacked} from './drawStacked.js';
 import {drawSeries} from './drawSeries.js';
 
-//powerSeriesViz('#viz', 6, 10);
+powerSeriesViz('#viz', 6, 10);
 
 function powerSeriesViz(target = '#viz', startExpon = 3, startNumberSteps = 10){
   const sliderWidth = 200;
