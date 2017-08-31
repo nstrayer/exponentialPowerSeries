@@ -21,6 +21,7 @@ function powerSeriesViz(target = '#viz', startExpon = 3, startNumberSteps = 10){
   
   
   function runViz(config){
+    
     let {expon, numberSteps} = config;
     
     let exponSlider = slid3r()
@@ -50,20 +51,30 @@ function powerSeriesViz(target = '#viz', startExpon = 3, startNumberSteps = 10){
     const drawIt = () => {
       sel.select('svg').remove();
       
+      const selWidth = sel.node().offsetWidth;
+      
+      const mobile = selWidth < 650;
+
       //update c
       c = d3.conventions({
         parentSel: sel,
-        totalWidth: sel.node().offsetWidth,
+        totalWidth: selWidth,
         height: 400,
-        margin: {left: 50, right: 50, top: 130, bottom: 30}
+        margin: {left: 50, right: 50, top: mobile? 200: 130, bottom: 30}
       });
       
+      const exLoc = mobile ? [0, -170] : [c.width*0.4 - sliderWidth, -100];
+      const stepsLoc = mobile ? [0, -100] : [c.width * 0.6 , -100];
+      const newWidth = mobile ? selWidth - 100: sliderWidth;
+
       exponSlider = exponSlider
-        .loc([c.width * 0.4 - sliderWidth, -100])
+        .width(newWidth)
+        .loc(exLoc)
         .startPos(expon);
       
       stepsSlider = stepsSlider
-        .loc([c.width * 0.6 , -100])
+        .width(newWidth)
+        .loc(stepsLoc)
         .startPos(numberSteps);
         
       c.svg.append('g').attr('class', 'exponSlider').call(exponSlider);

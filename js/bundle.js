@@ -254,17 +254,25 @@ function powerSeriesViz() {
     var drawIt = function drawIt() {
       sel.select('svg').remove();
 
+      var selWidth = sel.node().offsetWidth;
+
+      var mobile = selWidth < 650;
+
       //update c
       c = d3.conventions({
         parentSel: sel,
-        totalWidth: sel.node().offsetWidth,
+        totalWidth: selWidth,
         height: 400,
-        margin: { left: 50, right: 50, top: 130, bottom: 30 }
+        margin: { left: 50, right: 50, top: mobile ? 200 : 130, bottom: 30 }
       });
 
-      exponSlider = exponSlider.loc([c.width * 0.4 - sliderWidth, -100]).startPos(expon);
+      var exLoc = mobile ? [0, -170] : [c.width * 0.4 - sliderWidth, -100];
+      var stepsLoc = mobile ? [0, -100] : [c.width * 0.6, -100];
+      var newWidth = mobile ? selWidth - 100 : sliderWidth;
 
-      stepsSlider = stepsSlider.loc([c.width * 0.6, -100]).startPos(numberSteps);
+      exponSlider = exponSlider.width(newWidth).loc(exLoc).startPos(expon);
+
+      stepsSlider = stepsSlider.width(newWidth).loc(stepsLoc).startPos(numberSteps);
 
       c.svg.append('g').attr('class', 'exponSlider').call(exponSlider);
       c.svg.append('g').attr('class', 'stepsSlider').call(stepsSlider);
